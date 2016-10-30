@@ -1,0 +1,38 @@
+Determining if the function fseek64 exists failed with the following output:
+Change Dir: /Users/Restifo/Documents/ParticlePicking/eman2-custom/eman2-classes/eman2/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_95c37/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_95c37.dir/build.make CMakeFiles/cmTC_95c37.dir/build
+Building C object CMakeFiles/cmTC_95c37.dir/CheckFunctionExists.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=fseek64   -o CMakeFiles/cmTC_95c37.dir/CheckFunctionExists.c.o   -c /usr/local/Cellar/cmake/3.6.2/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_95c37
+/usr/local/Cellar/cmake/3.6.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_95c37.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fseek64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_95c37.dir/CheckFunctionExists.c.o  -o cmTC_95c37  
+Undefined symbols for architecture x86_64:
+  "_fseek64", referenced from:
+      _main in CheckFunctionExists.c.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_95c37] Error 1
+make: *** [cmTC_95c37/fast] Error 2
+
+
+Determining if the function ftell64 exists failed with the following output:
+Change Dir: /Users/Restifo/Documents/ParticlePicking/eman2-custom/eman2-classes/eman2/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_62a70/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_62a70.dir/build.make CMakeFiles/cmTC_62a70.dir/build
+Building C object CMakeFiles/cmTC_62a70.dir/CheckFunctionExists.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=ftell64   -o CMakeFiles/cmTC_62a70.dir/CheckFunctionExists.c.o   -c /usr/local/Cellar/cmake/3.6.2/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_62a70
+/usr/local/Cellar/cmake/3.6.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_62a70.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=ftell64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_62a70.dir/CheckFunctionExists.c.o  -o cmTC_62a70  
+Undefined symbols for architecture x86_64:
+  "_ftell64", referenced from:
+      _main in CheckFunctionExists.c.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_62a70] Error 1
+make: *** [cmTC_62a70/fast] Error 2
+
+
