@@ -780,7 +780,6 @@ class ManualBoxingTool:
 		from PyQt4.QtCore import Qt
 		if box_num == -1:
 			if event.modifiers()&Qt.ShiftModifier : return # the user tried to delete nothing
-			print self.target()
 			box_num = self.target().add_box(m[0],m[1],ManualBoxingTool.BOX_TYPE)
 			if self.panel_object.auto_center_checkbox.isChecked():
 				self.try_to_center_ref(box_num)
