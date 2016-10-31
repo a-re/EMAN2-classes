@@ -284,7 +284,6 @@ class EMBox:
 		self.score = score # can be some kind of score, such as correlation
 		self.image = None # an image
 
-
 	def __getitem__(self,idx):
 		'''
 		A highly specialized implementation of __getitem__ - makes it so you can treat an EMBox
@@ -345,6 +344,7 @@ class EMBox:
 	def reset_image(self): self.image = None
 
 	def get_shape(self,shape_string,box_size):
+		print "get_shape called: type: ", self.type
 		if EMBox.BOX_COLORS.has_key(self.type):
 			r,g,b = EMBox.BOX_COLORS[self.type]
 		else:
@@ -732,24 +732,18 @@ class ManualBoxingTool:
 	'''
 	A class that knows how to add, move and remove reference and non reference boxes
 	'''
-#	SET_BOX_COLOR = True
-#BOX_TYPE = "manual"
+	SET_BOX_COLOR = True
 	BOX_TYPES = [("manual_particle", "Particle"), ("manual_noparticle", "Not a particle"), ("manual_junk", "Junk")]
-	BOX_TYPE = "manual_particle"
+	BOX_TYPE = BOX_TYPES[0][0]
 	
-	#EMBox.set_box_color(BOX_TYPE,[1,1,1])
 	def __init__(self,target):
 		self.target = weakref.ref(target)
 		self.moving = None
 		self.panel_object = None
 		self.moving_data = None
-	
-		EMBox.set_box_color(self.BOX_TYPES[0][0], [1, 1, 1])
-		EMBox.set_box_color(self.BOX_TYPES[1][0], [128, 128, 128])
-		EMBox.set_box_color(self.BOX_TYPES[2][0], [255, 255, 255])
-#		if ManualBoxingTool.SET_BOX_COLOR:
-
-#			ManualBoxingTool.SET_BOX_COLOR = False
+		EMBox.set_box_color(self.BOX_TYPES[0][0], [0, 1, 0], force=True)
+		EMBox.set_box_color(self.BOX_TYPES[1][0], [1, 1, 0], force=True)
+		EMBox.set_box_color(self.BOX_TYPES[2][0], [1, 0, 0], force=True)
 
 	def get_widget(self):
 		if self.panel_object == None:
@@ -770,8 +764,7 @@ class ManualBoxingTool:
 	
 	def particle_type_changed(self, idx):
 		print "combobox changed, new boxtype: ", self.BOX_TYPES[idx][0]
-		self.BOX_TYPE = self.BOX_TYPES[idx][0]
-		pass
+		ManualBoxingTool.BOX_TYPE = self.BOX_TYPES[idx][0]
 
 	def unique_name(self): return ManualBoxingTool.BOX_TYPE
 
@@ -789,6 +782,7 @@ class ManualBoxingTool:
 		from PyQt4.QtCore import Qt
 		if box_num == -1:
 			if event.modifiers()&Qt.ShiftModifier : return # the user tried to delete nothing
+			print self.target()
 			box_num = self.target().add_box(m[0],m[1],ManualBoxingTool.BOX_TYPE)
 			if self.panel_object.auto_center_checkbox.isChecked():
 				self.try_to_center_ref(box_num)
@@ -832,6 +826,7 @@ class ManualBoxingTool:
 	def mouse_move(self,event): pass
 
 	def clear_all(self):
+		print ManualBoxingTool.BOX_TYPE
 		self.target().clear_boxes([ManualBoxingTool.BOX_TYPE],cache=True)
 
 	def moving_ptcl_established(self,box_num,x,y):
@@ -868,8 +863,6 @@ class ManualBoxingTool:
 		No need to act here for the manual boxing tool - everything is fine
 		'''
 		pass
-
-
 
 	#TODO: better code reuse, not copy and paste, here
 	#COPIED FROM e2boxer's SwarmBoxer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1285,12 +1278,16 @@ class EMBoxList(object):
 		if cache:
 			self.save_boxes_to_database(self.target().current_file())
 
-	def add_box(self,x,y,type=ManualBoxingTool.BOX_TYPE,score=0.0):
+	def add_box(self,x,y,type,score=0.0):
 		'''
 		Appends a box to the end of the list of the boxes
 		@return the index of the box that was just added
 		'''
-		self.boxes.append(EMBox(x,y,type,score))
+		#self.boxes.append(EMBox(x,y,type,score))
+		
+		box = EMBox(x, y, type, score)
+		self.boxes.append(box)
+		
 		self.shapes.append(None)
 		return len(self.boxes)-1
 
@@ -1519,7 +1516,6 @@ class EMBoxerModuleVitals(object):
 	def load_default_status_msg(self):
 		pass
 
-
 	def clear_boxes(self, type, cache=False):
 		self.box_list.clear_boxes(type,cache=cache)
 
@@ -1589,7 +1585,7 @@ class EMBoxerModuleVitals(object):
 		self.box_list.add_boxes(boxes)
 		self.box_list.save_boxes_to_database(self.current_file())
 
-	def add_box(self, x, y, type=ManualBoxingTool.BOX_TYPE):
+	def add_box(self, x, y, type):
 		self.box_placement_update_exclusion_image(x,y)
 		box_num = self.box_list.add_box(x,y,type=type)
 		self.box_list.save_boxes_to_database(self.current_file())
@@ -1795,11 +1791,11 @@ class EMBoxerModule(EMBoxerModuleVitals, PyQt4.QtCore.QObject):
 			if update_gl: self.main_2d_window.updateGL()
 		self.load_default_status_msg()
 
-	def add_box(self,x,y,type=ManualBoxingTool.BOX_TYPE):
+	def add_box(self,x,y,type):
 		if self.particles_window == None:
 			self.__init_particles_window()
 			get_application().show_specific(self.particles_window)
-		box_num = EMBoxerModuleVitals.add_box(self, x, y,type=type)
+		box_num = EMBoxerModuleVitals.add_box(self, x, y, type)
 		if self.particles_window:
 			self.particles_window.set_data(self.box_list.get_particle_images(self.current_file(), self.box_size))
 			self.particles_window.updateGL()
