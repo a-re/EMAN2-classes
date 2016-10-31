@@ -763,7 +763,6 @@ class ManualBoxingTool:
 		self.panel_object = panel
 	
 	def particle_type_changed(self, idx):
-		print "combobox changed, new boxtype: ", self.BOX_TYPES[idx][0]
 		ManualBoxingTool.BOX_TYPE = self.BOX_TYPES[idx][0]
 
 	def unique_name(self): return ManualBoxingTool.BOX_TYPE
