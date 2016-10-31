@@ -733,11 +733,14 @@ class ManualBoxingTool:
 	A class that knows how to add, move and remove reference and non reference boxes
 	'''
 #	SET_BOX_COLOR = True
+#BOX_TYPE = "manual"
+	BOX_TYPES = [("manual_particle", "Particle"), ("manual_noparticle", "Not a particle"), ("manual_junk", "Junk")]
 	BOX_TYPE = "manual"
-	EMBox.set_box_color(BOX_TYPE,[1,1,1])
+	#EMBox.set_box_color(BOX_TYPE,[1,1,1])
 	def __init__(self,target):
 		self.target = weakref.ref(target)
 		self.moving = None
+		#self.panel_object = ManualBoxingPanel(self)
 		self.panel_object = None
 		self.moving_data = None
 #		if ManualBoxingTool.SET_BOX_COLOR:
@@ -746,16 +749,25 @@ class ManualBoxingTool:
 
 	def get_widget(self):
 		if self.panel_object == None:
+			from PyQt4 import QtCore, QtGui, Qt
 			self.panel_object = ManualBoxingPanel(self)
-		return self.panel_object.get_widget()
-
-
+			ret = self.panel_object.get_widget()
+			for boxType in self.BOX_TYPES:
+				self.panel_object.particle_type_cbox.addItem(boxType[1]) # Add the human-readable label to the combobox
+			QtCore.QObject.connect(self.panel_object.particle_type_cbox, QtCore.SIGNAL("activated(int)"), self.particle_type_changed)
+		return ret
+		
 	def icon(self):
 		from PyQt4 import QtGui
 		return QtGui.QIcon(get_image_directory() + "white_box.png")
 
+	def set_panel_object(self, panel):
+		self.panel_object = panel
+	
+	def particle_type_changed(self, idx):
+		print "combobox changed"
+		pass
 
-	def set_panel_object(self,panel): self.panel_object = panel
 	def unique_name(self): return ManualBoxingTool.BOX_TYPE
 
 	def set_current_file(self,file_name,active_tool=False):
