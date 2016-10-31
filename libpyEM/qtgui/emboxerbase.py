@@ -735,14 +735,18 @@ class ManualBoxingTool:
 #	SET_BOX_COLOR = True
 #BOX_TYPE = "manual"
 	BOX_TYPES = [("manual_particle", "Particle"), ("manual_noparticle", "Not a particle"), ("manual_junk", "Junk")]
-	BOX_TYPE = "manual"
+	BOX_TYPE = "manual_particle"
+	
 	#EMBox.set_box_color(BOX_TYPE,[1,1,1])
 	def __init__(self,target):
 		self.target = weakref.ref(target)
 		self.moving = None
-		#self.panel_object = ManualBoxingPanel(self)
 		self.panel_object = None
 		self.moving_data = None
+	
+		EMBox.set_box_color(self.BOX_TYPES[0][0], [1, 1, 1])
+		EMBox.set_box_color(self.BOX_TYPES[1][0], [128, 128, 128])
+		EMBox.set_box_color(self.BOX_TYPES[2][0], [255, 255, 255])
 #		if ManualBoxingTool.SET_BOX_COLOR:
 
 #			ManualBoxingTool.SET_BOX_COLOR = False
@@ -765,7 +769,8 @@ class ManualBoxingTool:
 		self.panel_object = panel
 	
 	def particle_type_changed(self, idx):
-		print "combobox changed"
+		print "combobox changed, new boxtype: ", self.BOX_TYPES[idx][0]
+		self.BOX_TYPE = self.BOX_TYPES[idx][0]
 		pass
 
 	def unique_name(self): return ManualBoxingTool.BOX_TYPE

@@ -1,4 +1,4 @@
 {
-"box_size": 128, 
-"ptcl_display_shape": "square"
+"box_size": 60, 
+"ptcl_display_shape": "circle with marker"
 }
