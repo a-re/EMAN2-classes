@@ -344,7 +344,7 @@ class EMBox:
 	def reset_image(self): self.image = None
 
 	def get_shape(self,shape_string,box_size):
-		print "get_shape called: type: ", self.type
+		#print "get_shape called: type: ", self.type
 		if EMBox.BOX_COLORS.has_key(self.type):
 			r,g,b = EMBox.BOX_COLORS[self.type]
 		else:
@@ -579,7 +579,6 @@ class ErasingPanel:
 			self.erase_rad_edit.setEnabled(True)
 			hbl.addWidget(self.erase_rad_edit)
 
-
 			self.unerase = QtGui.QCheckBox("Unerase")
 			self.unerase.setChecked(False)
 
@@ -733,7 +732,7 @@ class ManualBoxingTool:
 	A class that knows how to add, move and remove reference and non reference boxes
 	'''
 	SET_BOX_COLOR = True
-	BOX_TYPES = [("manual_particle", "Particle"), ("manual_noparticle", "Not a particle"), ("manual_junk", "Junk")]
+	BOX_TYPES = [("particle", "Particle"), ("noparticle", "Not a particle"), ("junk", "Junk")]
 	BOX_TYPE = BOX_TYPES[0][0]
 	
 	def __init__(self,target):
@@ -741,9 +740,9 @@ class ManualBoxingTool:
 		self.moving = None
 		self.panel_object = None
 		self.moving_data = None
-		EMBox.set_box_color(self.BOX_TYPES[0][0], [0, 1, 0], force=True)
-		EMBox.set_box_color(self.BOX_TYPES[1][0], [1, 1, 0], force=True)
-		EMBox.set_box_color(self.BOX_TYPES[2][0], [1, 0, 0], force=True)
+		EMBox.set_box_color(self.BOX_TYPES[0][0], [0, 1, 0])
+		EMBox.set_box_color(self.BOX_TYPES[1][0], [1, 1, 0])
+		EMBox.set_box_color(self.BOX_TYPES[2][0], [1, 0, 0])
 
 	def get_widget(self):
 		if self.panel_object == None:
@@ -765,7 +764,7 @@ class ManualBoxingTool:
 	def particle_type_changed(self, idx):
 		ManualBoxingTool.BOX_TYPE = self.BOX_TYPES[idx][0]
 
-	def unique_name(self): return ManualBoxingTool.BOX_TYPE
+	def unique_name(self): return "Manual"
 
 	def set_current_file(self,file_name,active_tool=False):
 		'''
@@ -1408,7 +1407,6 @@ class EMBoxList(object):
 		return [[box.x,box.y,box.type] for box in self.boxes]
 
 	def save_boxes_to_database(self,image_name):
-
 		set_database_entry(image_name,"boxes",self.get_boxes_for_database())
 
 	def load_boxes_from_database(self,image_name,reset=True):
@@ -1489,7 +1487,8 @@ class EMBoxList(object):
 			for box in self.boxes:
 				xc = box.x-box_size/2
 				yc = box.y-box_size/2
-				f.write(str(int(xc))+'\t'+str(int(yc))+'\t'+str(box_size)+'\t'+str(box_size)+'\n')
+				type = box.type
+				f.write(str(int(xc))+'\t'+str(int(yc))+'\t'+str(box_size)+'\t'+str(box_size)+'\t'+str(type)+'\n')
 		f.close()
 
 

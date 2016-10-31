@@ -1,4 +1,12 @@
 {
 "box_size": 60, 
-"ptcl_display_shape": "circle with marker"
+"force": false, 
+"format": "hdf", 
+"invert": false, 
+"normproc": "normalize.edgemean", 
+"output_boxsize": 60, 
+"ptcl_display_shape": "circle with marker", 
+"suffix": "_ptcls", 
+"write_coords": false, 
+"write_particles": true
 }
